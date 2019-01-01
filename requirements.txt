@@ -1,6 +1,5 @@
-discord.py
+discord
 asyncio
 youtube-dl
 PyNaCl
-discord.ext
 requests
