@@ -3,7 +3,7 @@ import asyncio
 import youtube_dl
 from discord.ext import commands
 
-TOKEN = 'NTEyNjk1MzI1NjU2NDgxODA2.DwK9CA.O2ZCvtcdaLDwBDL8_S2FbMJcgpg'	
+
 
 client = commands.Bot(command_prefix = 't!')
 
@@ -88,9 +88,9 @@ async def tocar(ctx, url):
 	server = ctx.message.server
 	voice_client = client.voice_in(server)
 	player = await voice_client.create_ytdl_player(url)
-	players[serverid]
+	players[serverid] = player
 	player.start()
 	
 
 	
-client.run('NTEyNjk1MzI1NjU2NDgxODA2.DwK9CA.O2ZCvtcdaLDwBDL8_S2FbMJcgpg')
+client.run('BOT_TOKEN')
