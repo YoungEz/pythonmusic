@@ -69,4 +69,4 @@ async def ajuda(ctx):
     
     
     
-bot.run('BOT_TOKEN')
+bot.run('NTMwMDk3Mjc2MDczMjc5NDkx.Dw6beg.3EtFKbHl1K7RBTo2rN-RaLgzCb4')
