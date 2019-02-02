@@ -19,7 +19,7 @@ import request
 start_time = time.time()
 
 
-bot = commands.Bot(command_prefix='st!')
+bot = commands.Bot(command_prefix='s!')
 print (discord.__version__)
 
 
