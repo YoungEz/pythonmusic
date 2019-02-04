@@ -21,7 +21,7 @@ start_time = time.time()
 
 bot = commands.Bot(command_prefix='s!')
 print (discord.__version__)
-bot.remove.command('help')
+bot.remove_command'help')
 
 
 	
