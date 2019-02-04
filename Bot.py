@@ -459,7 +459,7 @@ async def modajuda(ctx):
     print('comando modajuda digitado no servidor {} por {}'.format(ctx.message.server.name, ctx.message.author))
     
 @bot.command(pass_context=True)
-async def roleta(ctx, *, pergunta: str = None):
+async def pergunta(ctx, *, pergunta: str = None):
     if not pergunta:
         return await bot.say("Você precisa perguntar alguma coisa.")
     else:
