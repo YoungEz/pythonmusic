@@ -1,0 +1,725 @@
+import discord, time, datetime
+from discord.ext import commands
+from discord.ext.commands import Bot
+from discord.voice_client import VoiceClient
+from discord.utils import get
+import asyncio
+import time
+import colorsys
+import sys
+import subprocess
+import os
+import json
+import traceback
+import random
+from random import choice
+import request
+
+
+start_time = time.time()
+
+
+bot = commands.Bot('s!')
+print (discord.__version__)
+bot.remove_command('help')
+COLOUR = 0xFFFF00
+COR = 0x00ff00
+amounts = {}
+
+@bot.event
+async def on_ready():
+    global amounts
+    try:
+        with open('amounts.json') as f:             
+            amounts = json.load(f)
+    except FileNotFoundError:
+        print("Could not load amounts.json")
+        amounts = {}
+        
+@bot.command()
+async def status():
+	while True:
+		await bot.change_presence(game=discord.Game(name='Fui criado pelo Mateusᵀᴷ#6548| s!ajuda'.format(len(bot.servers)), type=2))
+		await asyncio.sleep(20)
+		await bot.change_presence(game=discord.Game(name='para ' + str(len(set(bot.get_all_members())))+ ' usuários!👥', type=1))
+		await asyncio.sleep(20)
+		await bot.change_presence(game=discord.Game(name='Sendo Desenvolvido 📱💻'))
+		await asyncio.sleep(20)
+		await bot.change_presence(game=discord.Game(name='s!invite | s!vote ', type=3))
+		await asyncio.sleep(20)
+		await bot.change_presence(game=discord.Game(name='Estou em {} servidores, que legal!🎉'.format(len(bot.servers)), type=2))
+		await asyncio.sleep(20)
+		await bot.change_presence(game=discord.Game(name='Acesse Meu Site e me adicione em seu servidor: https://shiryubotdc.glitch.me', type=1))
+		await asyncio.sleep(30)
+
+
+
+		
+
+
+@bot.command(pass_context=True)
+async def balance(ctx):
+    id = ctx.message.author.id
+    if id in amounts:
+        await bot.say("{} Você Possui **{}** RyuCoins".format(ctx.message.author.mention, amounts[id]))
+    else:
+        await bot.say("Você Não possui uma conta. Para criar um conta digite ``s!criaracc``")
+
+@bot.command(pass_context=True)
+async def criaracc(ctx):
+	u = ctx.message.author.mention
+	id = ctx.message.author.id
+	if id not in amounts:
+		amounts[id] = 100
+		await bot.say("{} conta criada com sucesso!".format(u))
+		_save()
+	else:
+		await bot.say("{} Você Já Possui uma conta".format(u))
+        
+
+@bot.command(pass_context=True)
+async def transferir(ctx, amount: int, other: discord.Member):
+    primary_id = ctx.message.author.id
+    other_id = other.id
+    if primary_id not in amounts:
+        await bot.say("{} Você Não possui uma conta. Para criar um conta digite ``s!criaracc``".format(ctx.message.author.mention))
+    elif other_id not in amounts:
+        await bot.say("{} O usuário Marcado Não possui uma conta.".format(ctx.message.author.mention))
+    elif amounts[primary_id] < amount:
+        await bot.say("{} Você Não Possui RyuCoins suficientes para executar esse comando".format(ctx.message.author.mention))
+    else:
+        amounts[primary_id] -= amount
+        amounts[other_id] += amount
+        await bot.say("{} Transferiu **{} RyuCoins** Para {}!".format(ctx.message.author.mention, amount, other.mention))
+    _save()
+
+def _save():
+    with open('amounts.json', 'w+') as f:
+        json.dump(amounts, f)
+
+@bot.command()
+async def save():
+    _save()
+    
+@bot.command(pass_context=True)
+@commands.cooldown(1, 60*60*4, commands.BucketType.user)
+async def trabalhar(ctx):
+	primary_id = ctx.message.author.id
+	if primary_id not in amounts:
+		await bot.say("{} Você Não possui uma conta. Para criar um conta digite ``s!criaracc``".format(ctx.message.author.mention))
+	else:
+		tbr = random.randint(1, 9)
+		if tbr ==1:
+			amounts[primary_id] += 260
+			await bot.say("{} Trabalhando... Trabalhando... Parabéns você ganhou **260 RyuCoins**".format(ctx.message.author.mention))
+		if tbr ==2:
+			amounts[primary_id] += 190
+			await bot.say("{} Trabalhando... Trabalhando... Parabéns você ganhou **190 RyuCoins**".format(ctx.message.author.mention))
+		if tbr ==3:
+			amounts[primary_id] += 351
+			await bot.say("{} Trabalhando... Trabalhando... Parabéns você ganhou **531 RyuCoins**".format(ctx.message.author.mention))						
+		if tbr ==4:
+			amounts[primary_id] += 810
+			await bot.say("{} Trabalhando... Trabalhando... Parabéns você ganhou **810 RyuCoins**".format(ctx.message.author.mention))			
+		if tbr ==5:
+			amounts[primary_id] += 710
+			await bot.say("{} Trabalhando... Trabalhando... Parabéns você ganhou **710 RyuCoins**".format(ctx.message.author.mention))
+		if tbr ==6:
+			amounts[primary_id] += 1000
+			await bot.say("{} Trabalhando... Trabalhando... Parabéns você ganhou **1000 RyuCoins**".format(ctx.message.author.mention))			
+		if tbr ==7:
+			amounts[primary_id] += 678
+			await bot.say("{} Trabalhando... Trabalhando... Parabéns você ganhou **678 RyuCoins**".format(ctx.message.author.mention))
+		if tbr ==8:
+			amounts[primary_id] += 998
+			await bot.say("{} Trabalhando... Trabalhando... Parabéns você ganhou **998 RyuCoins**".format(ctx.message.author.mention))						
+		if tbr ==9:
+			amounts[primary_id] += 618
+			await bot.say("{} Trabalhando... Trabalhando... Parabéns você ganhou **618 RyuCoins**".format(ctx.message.author.mention))												
+		if tbr ==10:
+			amounts[primary_id] += 110
+			await bot.say("{} Trabalhando... Trabalhando... Parabéns você ganhou **110 RyuCoins**".format(ctx.message.author.mention))					
+			_save()
+
+def _save():
+    with open('amounts.json', 'w+') as f:
+        json.dump(amounts, f)
+        
+@trabalhar.error
+async def trabalhar_error(error, ctx):
+    if isinstance(error, commands.CommandOnCooldown):
+        msg = 'Você Já trabalhou muito. Descanse e volte novamente em {:.2f} segundos.'.format(error.retry_after)
+        await bot.send_message(ctx.message.channel, msg)
+    else:
+        raise error
+	
+    
+@bot.command(pass_context=True)
+async def addcoins(ctx, amount: int, other: discord.Member):
+    other_id = other.id
+    amounts[other_id] += amount
+    await bot.say("{} Adicionou **{} RyuCoins** Para {}!".format(ctx.message.author.mention, amount, other.mention))
+    _save()
+
+def _save():
+    with open('amounts.json', 'w+') as f:
+        json.dump(amounts, f)
+        
+@bot.command(pass_context=True)
+@commands.cooldown(1, 60*60*24, commands.BucketType.user)
+async def daily(ctx):
+	primary_id = ctx.message.author.id
+	if primary_id not in amounts:
+		await bot.say("{} Você Não possui uma conta. Para criar um conta digite ``s!criaracc``".format(ctx.message.author.mention))
+	else:
+		amounts[primary_id] += 200
+		await bot.say("{} Você Pegou sua daily volte amanhã para pegar novamente".format(ctx.message.author.mention))
+		_save()
+
+def _save():
+    with open('amounts.json', 'w+') as f:
+        json.dump(amounts, f)
+        
+@daily.error
+async def daily_error(error, ctx):
+    if isinstance(error, commands.CommandOnCooldown):
+        msg = 'Você Já pegou sua daily tente novamente em {:.2f} segundos.'.format(error.retry_after)
+        await bot.send_message(ctx.message.channel, msg)
+    else:
+        raise error
+        
+        
+@bot.command(pass_context=True)
+async def aposta(ctx, amount: int):
+	primary_id = ctx.message.author.id
+	if primary_id not in amounts:
+		await bot.say("{} Você Não possui uma conta. Para criar um conta digite ``s!criaracc``".format(ctx.message.author.mention))
+	else:
+		coin = random.randint(1, 2)
+		if coin == 1:
+			amounts[primary_id] += amount
+			await bot.say("{} Parabéns você ganhou a aposta! Valor ganho **{} RyuCoins**".format(ctx.message.author.mention, amount))
+		if coin == 2:
+			amounts[primary_id] -= amount
+			await bot.say("{} Você Perdeu a aposta. Valor perdido **{} RyuCoins**".format(ctx.message.author.mention, amount))
+			_save()
+
+def _save():
+    with open('amounts.json', 'w+') as f:
+        json.dump(amounts, f)
+
+   
+    
+@bot.event
+async def on_message(message):
+	await bot.process_commands(message)
+	if message.content.lower().startswith('s!shippar'):
+		try:
+			nome = message.mentions[0].name
+			nome2 = message.mentions[1].name
+			nome3 = len(nome2)
+			nome4 = nome3 - 4
+			nome5 = nome[0:4]
+			nome6 = nome2[nome4:nome3]
+			nome7 = nome5 + nome6
+			pessoa = message.author.name
+			porcentagem = random.randint(10, 100)
+			voce = message.author.mention
+			voce1= message.author.name
+			shippar = discord.Embed(title='Será que essa "Shippada" vai ser o Futuro?',
+			description='**O(a) {} Shippou {} com {}! \n {} % de chance de ser VERDADE.\n Junção dos nomes: {}** '.format(voce,message.mentions[0].mention,message.mentions[1].mention,porcentagem, nome7), color=COLOUR,
+			timestamp=datetime.datetime.utcnow())
+			shippar.set_image(url="https://media.giphy.com/media/eBb2guj7V5I5M5lL3t/giphy.gif")
+			shippar.set_author(name=pessoa, icon_url=message.author.avatar_url)
+			shippar.set_thumbnail(url='https://i.imgur.com/743dfAe.png')
+			shippar.set_footer(text='comando realizado por {} | Shiryu Bot Oficial'.format(voce1))
+			await bot.send_message(message.channel, embed=shippar)
+		except IndexError:
+			await bot.send_message(message.channel, "{} Você não mencionou dois usuarios".format(message.author.mention))
+
+
+		
+
+
+
+
+
+    
+@bot.command(pass_context=True)
+async def ping(ctx):
+	channel = ctx.message.channel
+	t1 = time.perf_counter()
+	await bot.send_typing(channel)
+	t2 = time.perf_counter()
+	embed=discord.Embed(title="Pong!", description='Meu Ping {}ms.'.format(round((t2-t1)*1000)), color=0x76FF03)
+	embed.set_footer(text ='Comando pedido por: {} | Shiryu Bot Oficial'.format(ctx.message.author.name))
+	await bot.say(embed=embed)
+	print('comando ping digitado no servidor {} por {}'.format(ctx.message.server.name, ctx.message.author))
+	
+@bot.command(pass_context=True)
+async def servers(ctx):
+	servers = list(bot.servers)
+	await bot.say("Estou conectado em " + str(len(bot.servers)) + " servers:")
+	for x in range(len(servers)):
+		await bot.say(" "+servers[x-1].name)
+
+@bot.command(pass_context = True)
+@commands.has_permissions(ban_members=True)
+async def ban(ctx, user: discord.User, *, motivo: str = None):
+	if not motivo:
+		return await bot.say('Você não especificou o motivo. Exemplo: ``s!ban <@usuário> <motivo>``')
+	else:
+		await bot.ban(user)
+		embed = discord.Embed(title='usuário banido!', description='{} usuário banido com sucesso'.format(ctx.message.author.mention), color=0xff0Ab)
+		embed.add_field(name='Autor', value=ctx.message.author)
+		embed.add_field(name='usuário banido', value=user.name)
+		embed.add_field(name='Motivo', value=motivo)
+		embed.set_footer(text='Comando realizado por {} | Shiryu Bot Oficial'.format(ctx.message.author.name))
+		await bot.say(embed=embed)
+		await bot.send_message(member, embed=embed)
+		print('comando ban digitado no servidor {} por {}'.format(ctx.message.server.name, ctx.message.author))
+							
+@bot.command(pass_context = True)
+@commands.has_permissions(kick_members=True)
+async def kick(ctx, user: discord.User, *, motivo: str = None):
+	if not motivo:
+		return await bot.say('Você não especificou o motivo. Exemplo: ``s!kick <@usuário> <motivo>``')
+	else:
+		await bot.kick(user)
+		embed = discord.Embed(title='usuário expulso!', description='{} usuário foi expulso com sucesso'.format(ctx.message.author.mention), color=0xff0Ab)
+		embed.add_field(name='Autor', value=ctx.message.author)
+		embed.add_field(name='usuário expulso', value=user.name)
+		embed.add_field(name='Motivo', value=motivo)
+		embed.set_footer(text='Comando realizado por {} | Shiryu Bot Oficial'.format(ctx.message.author.name))
+		await bot.say(embed=embed)
+		await bot.send_message(user, embed=embed)
+	print('comando kick digitado no servidor {} por {}'.format(ctx.message.server.name, ctx.message.author))
+		
+@bot.command()
+async def vote():
+	await bot.say('https://discordbots.org/bot/539468157291855903/vote')
+	
+@bot.command(pass_context=True)
+async def votar(ctx, *, mensagem: str= None):
+	if not mensagem:
+		return await bot.say('Você precisa falar algo para votar')
+	else:
+			vote = await bot.say(embed=discord.Embed(color=0xff0000, description=mensagem))
+			await bot.add_reaction(vote, "✅")
+			await bot.add_reaction(vote, "❌")
+	print('comando votar digitado no servidor {} por {}'.format(ctx.message.server.name, ctx.message.author))
+	
+	
+@bot.command()
+async def attlogs():
+	embed = discord.Embed(title='Atualizações do bot', color=0xB0ffA0)
+	embed.add_field(name='02/02/2018', value='Bot Aprovado Na Discord Bot List')
+	embed.add_field(name='01/02/2018', value='Correções de bugs')
+	embed.add_field(name='01/02/2018', value='Adicionado Motivo No Ban e Kick, O Bot tambem envia uma mensagem no PV do usuário banido')
+	embed.add_field(name='01/02/2018', value= 'Novo comando de diversão ``s!chorar``')
+	embed.add_field(name='31/02/3018', value='Novos comandos ``s!votar`` e ``s!pergunta``')
+	await bot.say(embed=embed)
+	print('comando attlogs digitado no servidor {} por {}'.format(ctx.message.server.name, ctx.message.author))
+			
+					
+	
+	
+@bot.command(pass_context=True)
+async def userinfo(ctx, user: discord.Member):
+	embed = discord.Embed(title="perfil de {}".format(user.name), description="Reflexão: Hoje n tem reflexão :(", color=0x00ff00)
+	embed.add_field(name="Nome", value=user.name, inline=True)
+	embed.add_field(name="ID do usuário", value=user.id, inline=True)
+	embed.add_field(name="Status do usuário", value=user.status, inline=True)
+	embed.add_field(name="Melhor cargo", value=user.top_role)
+	embed.add_field(name="entrou no servidor", value=user.joined_at)
+	embed.set_footer(text ='Comando pedido por: {} | Shiryu Bot Oficial'.format(ctx.message.author.name))
+	await bot.say(embed=embed)
+	print('comando attlogs digitado no servidor {} por {}'.format(ctx.message.server.name, ctx.message.author))
+	
+@bot.command(pass_context=True)
+async def invite(ctx):
+	await bot.say('{} https://discordapp.com/oauth2/authorize?client_id=539468157291855903&permissions=8&scope=bot'.format(ctx.message.author.mention))
+	print('comando invite digitado no servidor {} por {}'.format(ctx.message.server.name, ctx.message.author))
+	
+@bot.command(pass_context=True)
+async def serverinfo(ctx):
+	embed = discord.Embed(name="{}' serverinfo".format(ctx.message.server.name), description="s!ajuda para ver meus comandos!.", color=0x00fA00)
+	embed.add_field(name="📄Nome do servidor", value=ctx.message.server.name, inline=True)
+	embed.add_field(name = '👑 Dono', value = str(ctx.message.server.owner) + '\n' + ctx.message.server.owner.id);
+	embed.add_field(name="💻ID do servidor", value=ctx.message.server.id, inline=True)
+	embed.add_field(name="🎓Total de roles", value=len(ctx.message.server.roles), inline=True)
+	embed.add_field(name="👥Quantidade de Membros", value=len(ctx.message.server.members))
+	embed.add_field(name='🌎 Região', value=ctx.message.server.region)
+	embed.add_field(name='👮Role Top1', value=ctx.message.server.role_hierarchy[0])
+	embed.set_footer(text ='Comando pedido por: {} | Shiryu Bot Oficial'.format(ctx.message.author.name))
+	embed.set_thumbnail(url=ctx.message.server.icon_url)
+	await bot.say(embed=embed)
+	print('comando serverinfo digitado no servidor {} por {}'.format(ctx.message.server.name, ctx.message.author))
+
+@bot.command(pass_context=True)
+async def avatar(ctx, user: discord.User):
+	
+	list = (user.avatar_url), (user.avatar_url)
+	hug = random.choice(list)
+	hugemb = discord.Embed(title='Avatar de {}'.format(user.name), color=0x6A1B9A)
+	hugemb.set_image(url=hug)
+	hugemb.set_footer(text ='Comando pedido por: {} | Shiryu Bot Oficial'.format(ctx.message.author.name))
+	await bot.say(embed=hugemb)
+	print('comando avatar digitado no servidor {} por {}'.format(ctx.message.server.name, ctx.message.author))
+	
+
+	
+@bot.command(pass_context=True)
+async def kiss(ctx, user: discord.User):
+	list = 'https://cdn.discordapp.com/attachments/514045065929162764/533253217883258890/tumblr_mie2frAdXc1rfj82jo2_500.gif','https://cdn.discordapp.com/attachments/514045065929162764/533253218860269577/86d4a046c8a32a28341353fc95bedc82.gif', 'https://cdn.discordapp.com/attachments/514045065929162764/539494353694097438/feliz-aniversario-6224237-140820161718.gif'
+	
+	
+	
+	hug = random.choice(list)
+	hugemb = discord.Embed(title='Beijo! ❤',  description='**{}** recebeu um beijo de **{}**! Casal Fofo! :heart_eyes:'.format(user.name, ctx.message.author.name), color=0xA7ffbb)
+	hugemb.set_image(url=hug)
+	hugemb.set_footer(text ='Comando pedido por: {} | Shiryu Bot Oficial'.format(ctx.message.author.name))
+	await bot.say(embed=hugemb)
+	print('comando kiss digitado no servidor {} por {}'.format(ctx.message.server.name, ctx.message.author))
+	
+
+	
+@bot.command(pass_context=True)
+async def kepiada(ctx):
+	a = 'https://cdn.discordapp.com/attachments/514045065929162764/539758537245589504/Piada_mulher_de_tpm_cafe.jpg', 'https://cdn.discordapp.com/attachments/514045065929162764/539758537245589505/images_6.jpeg', 'https://cdn.discordapp.com/attachments/514045065929162764/539758537245589506/images_4.jpeg', 'https://cdn.discordapp.com/attachments/514045065929162764/539758537711026177/o_rapaz_apaixonado_diz_a_sua_amada.jpg', 'https://cdn.discordapp.com/attachments/514045065929162764/539758538214604810/images_5.jpeg', 'https://cdn.discordapp.com/attachments/514045065929162764/539758538214604812/ladrao-em-casa-3684XBr1G1DBAQ.jpg', 'https://cdn.discordapp.com/attachments/514045065929162764/539758538734567424/Passa_Passa_Passa.jpg', 'https://cdn.discordapp.com/attachments/514045065929162764/539758538734567425/na_delegacia_seu_delegado_meu_marido_saiu_de_casa.jpg'
+	hug = random.choice(a)
+	hugemb = discord.Embed(title='Piadas', color=0x6A1B9A)
+	hugemb.set_image(url=hug)
+	hugemb.set_footer(text ='Comando pedido por: {} | Shiryu Bot Oficial'.format(ctx.message.author.name))
+	await bot.say(embed=hugemb)
+	print('comando kepiada digitado no servidor {} por {}'.format(ctx.message.server.name, ctx.message.author))
+	
+@bot.command(pass_context=True)
+async def meme(ctx):
+	a = 'https://cdn.discordapp.com/attachments/514045065929162764/539763086895349760/images_9.jpeg', 'https://cdn.discordapp.com/attachments/514045065929162764/539763086895349761/cara-mano-tatuei-o-nome-da-minha-namora-e-ela-20426746.png', 'https://cdn.discordapp.com/attachments/514045065929162764/539763087474032640/images_7.jpeg', 'https://cdn.discordapp.com/attachments/514045065929162764/539763087474032641/images_10.jpeg', 'https://cdn.discordapp.com/attachments/514045065929162764/539763088002383883/images_11.jpeg', 'https://cdn.discordapp.com/attachments/514045065929162764/539763088455630855/3d6dcd431d328b82ac2bc8edf5f754ee--kawaii.jpg'
+	hug = random.choice(a)
+	hugemb = discord.Embed(title='SO MEME DE QUALIDADE MONSTRA', color=0x6A1B9A)
+	hugemb.set_image(url=hug)
+	hugemb.set_footer(text ='Comando pedido por: {} | Shiryu Bot Oficial'.format(ctx.message.author.name))
+	await bot.say(embed=hugemb)
+	print('comando meme digitado no servidor {} por {}'.format(ctx.message.server.name, ctx.message.author))
+
+	
+
+	
+@bot.command(pass_context = True)
+@commands.has_permissions(manage_nicknames=True)     
+async def setnick(ctx, user: discord.Member, *, nickname):
+    await bot.change_nickname(user, nickname)
+    emb = discord.Embed(title='Apelido alterado')
+    emb.add_field(name='usuário', value =user.name)
+    emb.add_field(name='Autor', value =ctx.message.author.name)
+    await bot.say(embed=emb)
+    print('comando setnick digitado no servidor {} por {}'.format(ctx.message.server.name, ctx.message.author))
+    
+@bot.command(pass_context = True)
+@commands.has_permissions(ban_members=True)
+async def avisar(ctx, member: discord.Member, *, content: str):
+	embed = discord.Embed(description='{} foi avisado com sucesso! por {}'.format(member.mention, ctx.message.author.mention), color=0x7a00bb)
+	await bot.send_message(member, content)
+	await bot.say(embed=embed)  
+	print('comando avisar digitado no servidor {} por {}'.format(ctx.message.server.name, ctx.message.author))
+
+	
+@bot.command(pass_context=True)
+@commands.has_permissions(gerence_roles=True)
+async def addrole(ctx, role: discord.Role, member: discord.Member=None):
+    member = member or ctx.message.author
+    await bot.add_roles(member, role)
+    embed = discord.Embed(description=' ✅Role Adicionada com sucesso!', color=0x00ff00)
+    await bot.say(embed=embed)
+    print('comando addrole digitado no servidor {} por {}'.format(ctx.message.server.name, ctx.message.author))
+  
+    
+@bot.command(pass_context=True)
+async def falar(ctx, *, arg):
+	await bot.say(arg)
+	print('comando falar digitado no servidor {} por {}'.format(ctx.message.server.name, ctx.message.author))
+
+@bot.command(pass_context=True)
+@commands.has_permissions(administrator=True)
+async def removerole(ctx, role: discord.Role, member: discord.Member=None):
+    member = member or ctx.message.author
+    await bot.remove_roles(member, role)
+    embed = discord.Embed(description=' 👮Role removida com sucesso', color=0xff0000)
+    await bot.say(embed=embed)
+    print('comando removerole digitado no servidor {} por {}'.format(ctx.message.server.name, ctx.message.author))
+	
+@bot.command(pass_context=True)
+async def slap(ctx, user: discord.User):
+	list = 'https://cdn.discordapp.com/attachments/514045065929162764/539494352112713760/giphy.gif', 'https://cdn.discordapp.com/attachments/514045065929162764/539494352112713760/giphy.gif'
+	
+	
+	
+	hug = random.choice(list)
+	hugemb = discord.Embed(title='Tapa!',  description=':scream:| **{}** Deu Um tapa em **{}**! Que Tapa!'.format(ctx.message.author.name, user.name), color=0xA7ffbb)
+	hugemb.set_image(url=hug)
+	hugemb.set_footer(text ='Comando pedido por: {} | Shiryu Bot Oficial'.format(ctx.message.author.name))
+	await bot.say(embed=hugemb)
+	print('comando slap digitado no servidor {} por {}'.format(ctx.message.server.name, ctx.message.author))
+	
+@bot.command(pass_context=True)
+async def brigar(ctx, user: discord.User):
+	list = 'https://cdn.discordapp.com/attachments/514045065929162764/539516094273290240/300px-DarkCureFight.gif', 'https://cdn.discordapp.com/attachments/514045065929162764/539733424185802763/source.gif'
+	
+
+	
+	
+	hug = random.choice(list)
+	hugemb = discord.Embed(title='BRIGA!',  description=':scream:| **{}** Brigou com **{}**!'.format(ctx.message.author.name, user.name), color=0xA7ffbb)
+	hugemb.set_image(url=hug)
+	hugemb.set_footer(text ='Comando pedido por: {} | Shiryu Bot Oficial'.format(ctx.message.author.name))
+	await bot.say(embed=hugemb)
+	print('comando brigar digitado no servidor {} por {}'.format(ctx.message.server.name, ctx.message.author))	
+	
+@bot.command(pass_context=True)
+async def dance(ctx, user: discord.User, use: str=None):
+	if not use:
+		return await bot('{} Você precisa mencionar algum usuário')
+	else:
+		list = 'https://cdn.discordapp.com/attachments/514045065929162764/539516095900418104/fanfiction-naruto-ao-seu-lado-2635515231020140950.gif', 'https://cdn.discordapp.com/attachments/514045065929162764/539516093593550868/ed8964dd9fb2f90e5eb4b19c577bec74.gif', 'https://cdn.discordapp.com/attachments/514045065929162764/539516093593550869/Akatsuki28.gif'
+		hug = random.choice(list)
+		hugemb = discord.Embed(title='Dançando!',  description=':man_dancing:| **{}** Esta dançando com **{}**! Passinho dos Maloka 😎'.format(ctx.message.author.name, user.name), color=0xA7ffbb)
+		hugemb.set_image(url=hug)
+		hugemb.set_footer(text ='Comando pedido por: {} | Shiryu Bot Oficial'.format(ctx.message.author.name))
+		await bot.say(embed=hugemb)
+		
+	print('comando ping digitado no servidor {} por {}'.format(ctx.message.server.name, ctx.message.author))
+		
+
+@bot.command(pass_context=True)
+async def matar(ctx, user: discord.User):
+	list = 'https://cdn.discordapp.com/attachments/514045065929162764/539733424185802762/b19b70f5c546ec7c67c2f0b4e61c21f743a5acaf_hq.gif', 'https://cdn.discordapp.com/attachments/514045065929162764/539733902097645568/tumblr_m6rerquar01qd4f2uo1_500.gif'
+	
+	
+	
+	hug = random.choice(list)
+	hugemb = discord.Embed(title='Assasino!',  description='👮☎| **{}** Matou **{}**! ASSASINO!'.format(ctx.message.author.name, user.name), color=0xA7ffbb)
+	hugemb.set_image(url=hug)
+	hugemb.set_footer(text ='Comando pedido por: {} | Shiryu Bot Oficial'.format(ctx.message.author.name))
+	await bot.say(embed=hugemb)
+	
+
+	
+	
+@bot.command(pass_context=True)
+async def atack(ctx, user: discord.User):
+	list = 'https://cdn.discordapp.com/attachments/514045065929162764/539494351030452238/tumblr_mzh5vtuEIC1rm4wgqo4_r2_500.gif', 'https://cdn.discordapp.com/attachments/514045065929162764/539494352926277633/01_Rikka.gif', 'https://cdn.discordapp.com/attachments/514045065929162764/539494350053310475/G4dfvA5.gif', 'https://cdn.discordapp.com/attachments/514045065929162764/539733423418376194/large.gif'
+	
+	
+	
+	hug = random.choice(list)
+	hugemb = discord.Embed(title='Atack!',  description='💥| **{}** Atacou **{}**! Como ousas me atacar!'.format(ctx.message.author.name, user.name), color=0xA7ffbb)
+	hugemb.set_image(url=hug)
+	hugemb.set_footer(text ='Comando pedido por: {} | Shiryu Bot Oficial'.format(ctx.message.author.name))
+	await bot.say(embed=hugemb)
+	
+@bot.command(pass_context=True)
+async def suicidio(ctx):
+	list = 'https://cdn.discordapp.com/attachments/514045065929162764/533344634576044052/tumblr_nee9xjzaxR1r3rdh2o1_500-1.gif', 'https://cdn.discordapp.com/attachments/514045065929162764/533344635247001602/47892bb88afc132a3afb775988208240.gif'
+	
+	
+	
+	hug = random.choice(list)
+	hugemb = discord.Embed(title='Suicidio 💔',  description='**{}** se suicidou!'.format(ctx.message.author.name), color=0xA7ffbb)
+	hugemb.set_image(url=hug)
+	hugemb.set_footer(text ='Comando pedido por: {} | Shiryu Bot Oficial'.format(ctx.message.author.name))
+	await bot.say(embed=hugemb)
+	
+@bot.command(pass_context=True)
+async def voadora(ctx, user: discord.User):
+	list = 'https://cdn.discordapp.com/attachments/514045065929162764/539733422621589504/giphy_6.gif', 'https://cdn.discordapp.com/attachments/514045065929162764/539733422621589504/giphy_6.gif'
+	
+	
+	
+	hug = random.choice(list)
+	hugemb = discord.Embed(title='Voadora',  description='**{}** Deu uma voadora em **{}** EITA!'.format(ctx.message.author.name, user.name), color=0xA7ffbb)
+	hugemb.set_image(url=hug)
+	hugemb.set_footer(text ='Comando pedido por: {} | Shiryu Bot Oficial'.format(ctx.message.author.name))
+	await bot.say(embed=hugemb)
+	
+@bot.command(pass_context=True)
+async def deathnote(ctx, user: discord.User):
+	list = 'https://cdn.discordapp.com/attachments/514045065929162764/534806488531599380/14ae937e622c452bc45e509ed43c8e38a410fc0b_hq.gif', 'https://cdn.discordapp.com/attachments/514045065929162764/533615190273425409/67dc6ce11c0ebe1c723983f18d7f68a8b0d11887_hq.gif'
+	
+	
+	
+	hug = random.choice(list)
+	hugemb = discord.Embed(title='Death Note 💀',  description='**{}** escreveu o nome de **{}** em seu Death Note'.format(ctx.message.author.name, user.name), color=0xA7ffbb)
+	hugemb.set_image(url=hug)
+	hugemb.set_footer(text='Bot Oficial Shiryu')
+	await bot.say(embed=hugemb)
+	await asyncio.sleep(5)
+	hugemb = discord.Embed(title='Death Note 💔',  description='**{}** morreu apos um ataque cardiaco depois de ter seu nome escrito no Death Note de **{}**'.format(user.name, ctx.message.author.name), color=0xA7ffbb)
+	hugemb.set_footer(text ='Comando pedido por: {} | Shiryu Bot Oficial'.format(ctx.message.author.name))
+	await bot.say(embed=hugemb)
+	
+@bot.command(pass_context=True)
+async def hug(ctx, user: discord.User):
+	list = 'https://cdn.discordapp.com/attachments/531090629715951629/532667673943736351/action.gif','https://cdn.discordapp.com/attachments/531090629715951629/532672938596368393/action.gif', 'https://cdn.discordapp.com/attachments/514045065929162764/539494351555002379/tumblr_mdi1l8AaDi1rcm8d4o1_500.gif'
+	
+	
+	
+	hug = random.choice(list)
+	hugemb = discord.Embed(title='Abraço ❤',  description='**{}** Ele(a) recebeu um abraço de **{}**!! :heart_eyes:'.format(user.name, ctx.message.author.name), color=0x00ffbb)
+	hugemb.set_image(url=hug)
+	hugemb.set_footer(text ='Comando pedido por: {} | Shiryu Bot Oficial'.format(ctx.message.author.name))
+	await bot.say(embed=hugemb)  
+	
+@bot.command()
+async def flipcoin():
+	list = 'tapa na **CARA**', 'Rei perdeu a **COROA**'
+	await bot.say(random.choice(list))
+	
+			
+@bot.command(pass_context=True)
+@commands.has_permissions(ban_members=True)
+async def voicemute(ctx, member: discord.Member):
+    await bot.server_voice_state(member,mute=True)
+    emb = discord.Embed(title='Usuário mutado voz', description='{} foi mutado com sucesso.'.format(member.mention), color=0xE57373)
+    emb.set_footer(text ='Comando pedido por: {} | Shiryu Bot Oficial'.format(ctx.message.author.name))
+    await bot.say(embed=emb)  
+
+@bot.command(pass_context=True)
+@commands.has_permissions(ban_members=True)
+async def voiceunmute(member: discord.Member):
+	await bot.server_voice_state(member,mute=False)
+	emb = discord.Embed(title='Usuário desmutado voz', description='{} foi desmutado com sucesso.'.format(member.mention), color=0x00ffbb)
+	emb.set_footer(text ='Comando pedido por: {} | Shiryu Bot Oficial'.format(ctx.message.author.name))
+	await bot.say(embed=emb)
+
+@bot.command(pass_context=True)
+@commands.has_permissions(manage_messages=True)
+async def clear(ctx, limit: int=100):
+    async for msg in bot.logs_from(ctx.message.channel, limit=limit):
+            try:
+                await bot.delete_message (msg)
+            except:
+                pass
+    embed = discord.Embed(description="**{}** mensagens apagadas com sucesso! {} :smile:".format(limit, ctx.message.author.mention), color=0x00ff00)
+    embed.set_footer(text ='Comando pedido por: {} | Shiryu Bot Oficial'.format(ctx.message.author.name))
+    await bot.say (embed=embed)
+    print('comando clear digitado no servidor {} por {}'.format(ctx.message.server.name, ctx.message.author))
+    
+@bot.command(pass_context = True)
+async def help(ctx):
+    author = ctx.message.author
+    r, g, b = tuple(int(x * 255) for x in colorsys.hsv_to_rgb(random.random(), 1, 1))
+    
+   
+    
+    embed = discord.Embed(color = discord.Color((r << 16) + (g << 8) + b))
+    embed.set_author(name='Ajuda')
+    embed.set_image(url = 'https://image.ibb.co/caM2BK/help.gif')
+    embed.add_field(name = 's!modajuda ',value ='Comandos de moderação Ex: ban,kick e clear etc...',inline = False)
+    embed.add_field(name = 's!diversaoajuda ',value ='Comandos de diversão e que todos podem usar! Ex: kiss,hug e deathnote.',inline = False)
+    embed.set_footer(text='comando realizado por {}| Bot Oficial Shiryu'.format(ctx.message.author.name))
+    await bot.send_message(author,embed=embed)
+    await bot.say('{} Enviei mensagens em sua DM'.format(ctx.message.author.mention))
+    print('comando help digitado no servidor {} por {}'.format(ctx.message.server.name, ctx.message.author))    
+    
+    
+@bot.command(pass_context = True)
+async def ajuda(ctx):
+    author = ctx.message.author
+    r, g, b = tuple(int(x * 255) for x in colorsys.hsv_to_rgb(random.random(), 1, 1))
+    
+   
+    
+    embed = discord.Embed(color = discord.Color((r << 16) + (g << 8) + b))
+    embed.set_author(name='Ajuda')
+    embed.set_image(url = 'https://image.ibb.co/caM2BK/help.gif')
+    embed.add_field(name = 's!modajuda ',value ='Comandos de moderação Ex: ban,kick e clear etc...',inline = False)
+    embed.add_field(name = 's!diversaoajuda ',value ='Comandos de diversão e que todos podem usar! Ex: kiss,hug e deathnote.',inline = False)
+    embed.set_footer(text='comando realizado por {}| Bot Oficial Shiryu'.format(ctx.message.author.name))
+    await bot.send_message(author,embed=embed)
+    await bot.say('{} Enviei mensagens em sua DM'.format(ctx.message.author.mention))
+    print('comando ajuda digitado no servidor {} por {}'.format(ctx.message.server.name, ctx.message.author))
+    
+@bot.command(pass_context = True)
+async def modajuda(ctx):
+    author = ctx.message.author
+    r, g, b = tuple(int(x * 255) for x in colorsys.hsv_to_rgb(random.random(), 1, 1))
+    embed = discord.Embed(color = discord.Color((r << 16) + (g << 8) + b))
+    embed.set_author(name='Comandos Moderação Help')
+    embed.set_image(url = 'https://image.ibb.co/caM2BK/help.gif')
+    embed.add_field(name = 's!kick ',value ='como usar ``s!kick @usuário`` Expulsa o usuário marcado',inline = False)
+    embed.add_field(name = 's!ban ',value ='Como usar ``s!ban @usuário`` bane o usuário marcado',inline = False)
+    embed.add_field(name = 's!addrole ',value ='Como usar ``s!addrole @role @usuário`` adiciona um determinado cargo ao usuário marcado',inline = False)
+    embed.add_field(name = 's!removerole',value ='Como usar ``s!removerole @role @usuário`` remove um determinado cargo do usuário marcado ',inline = False)
+    embed.add_field(name = 's!clear',value ='Como usar ``s!clear`` apaga as mensagens do canal de texto atual ',inline = False)
+    embed.add_field(name = 's!avisar',value ='Como usar ``s!avisar @usuário`` avisa um usuário no PV ',inline = False)
+
+
+    await bot.send_message(author,embed=embed)
+    await bot.say('{} Enviei mensagens em sua DM'.format(ctx.message.author.mention))
+    print('comando modajuda digitado no servidor {} por {}'.format(ctx.message.server.name, ctx.message.author))
+    
+@bot.command(pass_context=True)
+async def roleta(ctx, *, pergunta: str = None):
+    if not pergunta:
+        return await bot.say("Você precisa perguntar alguma coisa.")
+    else:
+        resposta = choice(['Sim', 'Não', 'Talvez', 'Nunca', 'Claro'])
+        embed = discord.Embed(color=0xFF0000)
+        embed.add_field(name="Pergunta:", value='{}'.format(pergunta), inline=False)
+        embed.add_field(name="Resposta:", value=resposta, inline=False)
+        await bot.say(embed=embed)
+        print('comando roleta digitado no servidor {} por {}'.format(ctx.message.server.name, ctx.message.author))
+    
+    
+   
+   
+@bot.command(pass_context=True)
+async def diversaoajuda(ctx):
+    author = ctx.message.author
+    r, g, b = tuple(int(x * 255) for x in colorsys.hsv_to_rgb(random.random(), 1, 1))
+    embed = discord.Embed(color = discord.Color((r << 16) + (g << 8) + b))
+    embed.add_field(name = 's!dance ',value ='Como usar ``s!dance`` dance com algum usuário',inline = False)
+    embed.add_field(name = 's!kiss ',value ='Como usar ``s!kiss @usuário`` O amor esta no ar! beije determinado usuário!',inline = False)
+    embed.add_field(name = 's!hug ',value ='Como usar ``s!abraçar @usuário`` abrace seu/sua melhor amigo(a).',inline = False)
+    embed.add_field(name = 's!flipcoin ',value ='Como usar ``s!flipcoin`` Cara ou coroa?',inline = False)
+    embed.add_field(name = 's!deathnote ',value ='Como usar ``s!deathnote @usuário`` Escreva o nome de determinado usuário em seu Death Note ',inline = False)
+    embed.add_field(name = 's!avatar ',value ='Como usar ``s!avatar @usuário`` Veja o avatar do usuário',inline = False)
+    embed.add_field(name="s!meme", value="como usar ``s!meme`` que tal ver alguns memes?!", inline=False)
+    embed.add_field(name="s!ping", value="como usar ``s!ping`` Veja meu tempo de resposta!", inline=False)
+    embed.add_field(name="s!userinfo", value="como usar ``s!userinfo @usuário`` Veja o perfil de um determinado usuário!", inline=True)
+    embed.add_field(name="s!voadora", value="como usar ``s!voadora @usuário`` de uma voadora em alguem!", inline=True)
+    embed.add_field(name="s!brigar", value="como usar ``s!brigar @usuário`` Use esse comando se alguem estiver merecendo apanhar!", inline=True)  	
+    embed.add_field(name="s!matar", value="como usar ``s!matar @usuário`` Use esse comando se alguem estiver merecendo!", inline=True)
+    embed.add_field(name="s!slap", value="como usar ``s!slap @usuário`` Use esse comando se alguem estiver merecendo levar uns tapa cabuloso", inline=True)
+    embed.add_field(name="s!falar", value="como usar ``s!userinfo @usuário`` Faça eu falae alguma coisa!", inline=True)
+    embed.add_field(name="s!suicidio", value="como usar ``s!suicidio`` suicidio💔", inline=True)
+    embed.add_field(name="s!kepiada", value="como usar ``s!kepiada`` Que tal uma piada?!", inline=True)
+    embed.add_field(name="s!atack", value="como usar ``s!atack @usuário`` use este comando para atacar alguem!", inline=True)
+    embed.add_field(name="s!chorar", value="como usar ``s!chorar`` Chorar faz bem para os olhos...", inline=True)
+    embed.add_field(name="s!votar", value="como usar ``s!votar`` Faça uma votação em seu servidor", inline=True)
+    embed.add_field(name="s!pergunta", value="como usar ``s!pergunta`` me faça uma pergunta!", inline=True)
+    embed.add_field(name="s!shippar", value="como usar ``s!shippar <user> <user>`` Veja Se Um Casal Daria certo!", inline=True)
+        
+    await bot.send_message(author,embed=embed)
+    await bot.say('{} Enviei mensagens em sua DM'.format(ctx.message.author.mention))
+    print('comando diversaoajuda digitado no servidor {} por {}'.format(ctx.message.server.name, ctx.message.author))  
+      
+@bot.command(pass_context=True)
+async def chorar(ctx):
+	list = 'https://cdn.discordapp.com/attachments/514045065929162764/540913648453943338/tumblr_mchb17x02w1r5patso2_500.gif', 'https://cdn.discordapp.com/attachments/514045065929162764/540913648453943336/0319d0c4d6ce1750c2fc7b3c5d383723db18d37dr1-500-284_00.gif', 'https://cdn.discordapp.com/attachments/514045065929162764/540913648034643972/86a31db739b7f40d576c90f1ff9329ab254958f0_hq.gif', 'https://cdn.discordapp.com/attachments/514045065929162764/540913647610757130/cfd934eac0f14d3f43284b16ec0a902b.gif'
+	
+	
+	
+	hug = random.choice(list)
+	hugemb = discord.Embed(title='Chorar...',  description='😭| **{}** Esta chorando...'.format(ctx.message.author.name), color=0xA7ffbb)
+	hugemb.set_image(url=hug)
+	hugemb.set_footer(text ='Comando realizado por {} | Shiryu Bot Oficial'.format(ctx.message.author.name))
+	await bot.say(embed=hugemb)
+	print('comando chorar digitado no servidor {} por {}'.format(ctx.message.server.name, ctx.message.author))    
+	
+bot.run(str(os.environ.get('BOT_TOKEN')))
+
+
+
