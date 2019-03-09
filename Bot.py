@@ -29,7 +29,7 @@ amounts = {}
 @bot.event
 async def on_ready():
 	while True:
-		await bot.change_presence(game=discord.Game(name='Fui criado pelo Mateus#6548| s!ajuda'.format(len(bot.servers)), type=2))
+		await bot.change_presence(game=discord.Game(name='Fui criado pelo Mateusᴱʳʸᵏᵃʰ#6548| s!ajuda'.format(len(bot.servers)), type=2))
 		await asyncio.sleep(20)
 		await bot.change_presence(game=discord.Game(name='para ' + str(len(set(bot.get_all_members())))+ ' usuários!👥', type=1))
 		await asyncio.sleep(20)
