@@ -31,7 +31,7 @@ async def on_ready():
 	while True:
 		await bot.change_presence(game=discord.Game(name='Fui criado pelo El_Brähmäᶠᶸᶜᵏᵧₒᵤ#9911| s!ajuda'.format(len(bot.servers)), type=2))
 		await asyncio.sleep(20)
-		await bot.change_presence(game=discord.Game(name='para ' + str(len(set(bot.get_all_members())))+ ' usuários!👥', type=1))
+		await bot.change_presence(game=discord.Game(name='para ' + str(len(set(bot.get_all_members())))+ ' usuarios!', type=1))
 		await asyncio.sleep(20)
 		await bot.change_presence(game=discord.Game(name='Sendo Desenvolvido 📱💻'))
 		await asyncio.sleep(20)
@@ -39,7 +39,7 @@ async def on_ready():
 		await asyncio.sleep(20)
 		await bot.change_presence(game=discord.Game(name='Estou Em {} Servidores'.format(len(bot.servers)), type=2))
 		await asyncio.sleep(20)
-		await bot.change_presence(game=discord.Game(name='Minha Nova Versão 2.0 Já esta disponivel!', type=1))
+		await bot.change_presence(game=discord.Game(name='Estou Na Versão 2.1!', type=1))
 		await asyncio.sleep(30)
 
 
@@ -52,29 +52,8 @@ async def on_ready():
 @bot.event
 async def on_message(message):
 	await bot.process_commands(message)
-	if message.content.lower().startswith('s!shippar'):
-		try:
-			nome = message.mentions[0].name
-			nome2 = message.mentions[1].name
-			nome3 = len(nome2)
-			nome4 = nome3 - 4
-			nome5 = nome[0:4]
-			nome6 = nome2[nome4:nome3]
-			nome7 = nome5 + nome6
-			pessoa = message.author.name
-			porcentagem = random.randint(10, 100)
-			voce = message.author.mention
-			voce1= message.author.name
-			shippar = discord.Embed(title='Será que essa "Shippada" vai ser o Futuro?',
-			description='**O(a) {} Shippou {} com {}! \n {} % de chance de ser VERDADE.\n Junção dos nomes: {}** '.format(voce,message.mentions[0].mention,message.mentions[1].mention,porcentagem, nome7), color=COLOUR,
-			timestamp=datetime.datetime.utcnow())
-			shippar.set_image(url="https://media.giphy.com/media/eBb2guj7V5I5M5lL3t/giphy.gif")
-			shippar.set_author(name=pessoa, icon_url=message.author.avatar_url)
-			shippar.set_thumbnail(url='https://i.imgur.com/743dfAe.png')
-			shippar.set_footer(text='comando realizado por {} | Shiryu Bot Oficial'.format(voce1))
-			await bot.send_message(message.channel, embed=shippar)
-		except IndexError:
-			await bot.send_message(message.channel, "{} Você não mencionou dois usuarios".format(message.author.mention))
+	if message.content.lower().startswith('<@539468157291855903>'):
+		await bot.say('<:Shiryu:573662637452427264>| Olá {} Meu prefixo é ``s!`` para ver meus comandos digite ``s!ajuda`` ou ``s!help``!'.format(message.author.mention))
 
 
 		
@@ -329,7 +308,7 @@ async def falar(ctx, *, arg: str=None):
     if not arg:
         return await bot.say('{} Você Precisa Escrever Algo Para Eu Falar.'.format(ctx.message.author.mention))
     else:
-        await bot.say("{} Me Forçou A Falar...{}".format(arg))
+        await bot.say("{} Me Forçou A Falar...{}".format(ctx.message.author.mention, arg))
         print('comando falar digitado no servidor {} por {}'.format(ctx.message.server.name, ctx.message.author))
 
 	
@@ -598,7 +577,7 @@ async def diversaoajuda(ctx):
     embed.add_field(name="s!chorar", value="como usar ``s!chorar`` Chorar faz bem para os olhos...", inline=True)
     embed.add_field(name="s!votar", value="como usar ``s!votar`` Faça uma votação em seu servidor", inline=True)
     embed.add_field(name="s!pergunta", value="como usar ``s!pergunta`` me faça uma pergunta!", inline=True)
-    embed.add_field(name="s!shippar", value="como usar ``s!shippar <user> <user>`` Veja Se Um Casal Daria certo!", inline=True)
+    
         
     await bot.send_message(author,embed=embed)
     await bot.say('{} Enviei mensagens em sua DM'.format(ctx.message.author.mention))
