@@ -53,7 +53,7 @@ async def on_ready():
 async def on_message(message):
 	await bot.process_commands(message)
 	if message.content.lower().startswith('<@539468157291855903>'):
-		await bot.say('<:Shiryu:573662637452427264>| Olá {} Meu prefixo é ``s!`` para ver meus comandos digite ``s!ajuda`` ou ``s!help``!'.format(message.author.mention))
+		await bot.send_message(message.channel, '<:Shiryu:573662637452427264>| Olá {} Meu prefixo é ``s!`` para ver meus comandos digite ``s!ajuda`` ou ``s!help``!'.format(message.author.mention))
 
 
 		
