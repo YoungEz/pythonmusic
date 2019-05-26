@@ -1,6 +1,9 @@
-discord
+discord.py
+dnspython
+pymongo
+requests
 asyncio
-request
+https://github.com/Nekos-life/nekos.py/archive/master.zip
 
 
 
