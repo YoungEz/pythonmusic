@@ -354,7 +354,7 @@ async def aposta(ctx, aposta: int=None):
           		tutorial.rpg.update_one({"_id":str(ctx.author.id)}, {"$set":{"coins":int(moedas) - aposta}})
          
           		msg = await ctx.send(f"<a:money:581670005306032130> | {ctx.author.mention}, Perdeu a aposta e perdeu `{aposta}` Ryucoins.")
-          		await msg.add_reaction('<a:money:581670005306032130> ')
+          		
           		
        except Exception as e:
            await ctx.send(f"[Erro] {e}")
