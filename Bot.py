@@ -25,7 +25,7 @@ from random import choice
 url = os.environ.get('URL')
 mongo = MongoClient(url)
 
-bot = commands.Bot('st!', owner_id=528782261315698718)
+bot = commands.Bot('s!', owner_id=528782261315698718)
 print (discord.__version__)
 
 
